@@ -42,7 +42,7 @@ meu-projeto-fastapi/
 │   │
 │   └──DB/ 
 │       ├── database.py      # Configuração de conexão global com o banco de dados
-|          seeds/            # Gerenciamento escalável de Seeds automáticos
+|       ├── seeds/            # Gerenciamento escalável de Seeds automáticos
 │           ├── __init__.py
 │           ├── companies_seed.py
 │           ├── users_seed.py

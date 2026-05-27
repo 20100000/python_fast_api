@@ -65,8 +65,8 @@ Certifique-se de ter instalado em sua máquina:
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com
-   cd SEU_REPOSITORIO
+   git clone https://github.com/20100000/python_fast_api.git
+   cd python_fast_api
    ```
 
 2. **Inicie os contêineres do Docker:**
@@ -106,7 +106,7 @@ O FastAPI gera uma documentação interativa fantástica por padrão. Para testa
 
 * **Nome:** Tiago Honório
 * **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
-* **GitHub:** [@SEU_USUARIO](https://github.com)
+* **GitHub:** [@20100000](https://github.com/20100000)
 
 ---
 Desenvolvido para fins de aprendizado de boas práticas em arquitetura de microsserviços com Python. 🌟

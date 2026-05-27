@@ -1,0 +1,15 @@
+[project]
+name = "fastapi-modular-crud"
+version = "1.1.0"
+description = "API RESTful modular para gerenciamento de usuários e empresas usando FastAPI e PostgreSQL."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Tiago Honório", email = "tiago_honorio2010@hotmail.com" }
+]
+keywords = ["fastapi", "postgresql", "docker", "crud", "modular"]
+
+[project.urls]
+Homepage = "https://github.com/20100000"
+Bug_Tracker = "https://github.com/20100000/issues"

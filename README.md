@@ -24,7 +24,6 @@ meu-projeto-fastapi/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── database.py         # Configuração de conexão global com o banco de dados
 │   ├── main.py             # Ponto de entrada da API e registro de rotas
 │   │
 │   ├── companies/          # Módulo isolado de Empresas
@@ -41,11 +40,13 @@ meu-projeto-fastapi/
 │   │   ├── router.py
 │   │   └── schemas.py
 │   │
-│   └── seeds/              # Gerenciamento escalável de Seeds automáticos
-│       ├── __init__.py
-│       ├── companies_seed.py
-│       ├── users_seed.py
-│       └── run.py          # Orquestrador geral de execução dos seeds
+│   └──DB/ 
+│       ├── database.py      # Configuração de conexão global com o banco de dados
+|          seeds/            # Gerenciamento escalável de Seeds automáticos
+│           ├── __init__.py
+│           ├── companies_seed.py
+│           ├── users_seed.py
+│           └── run.py          # Orquestrador geral de execução dos seeds
 │
 ├── Dockerfile              # Configuração do contêiner da aplicação Python
 ├── docker-compose.yml      # Orquestração do FastAPI + PostgreSQL + Healthcheck

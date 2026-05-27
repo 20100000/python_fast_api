@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
-from app.database import Base  # Importação ajustada para a raiz do app
+from app.DB.database import Base  # Importação ajustada para a raiz do app
 
 class User(Base):
     __tablename__ = "users"

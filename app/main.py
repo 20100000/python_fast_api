@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from app.database import engine, Base
+from app.DB.database import engine, Base
 from app.users.router import router as users_router
 from app.companies.router import router as companies_router
 from app.users import models 
 from app.companies import models as company_models
-from app.seeds.run import run_all_seeds
+from app.DB.seeds.run import run_all_seeds
 
 # 1. Cria as tabelas no banco de dados automaticamente se não existirem
 Base.metadata.create_all(bind=engine)

@@ -1,6 +1,6 @@
-from app.database import SessionLocal
-from app.seeds.users_seed import seed_users
-from app.seeds.companies_seed import seed_companies
+from app.DB.database import SessionLocal
+from app.DB.seeds.users_seed import seed_users
+from app.DB.seeds.companies_seed import seed_companies
 
 def run_all_seeds():
     db = SessionLocal()

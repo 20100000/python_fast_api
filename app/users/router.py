@@ -15,7 +15,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="Email já cadastrado."
+            detail="Email ja cadastrado."
         )
     return crud.create_user(db=db, user=user)  
 
@@ -29,26 +29,29 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if not db_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Usuário não encontrado."
+            ddetail="Usuario nao encontrado."
         )
     return db_user
 
 @router.put("/{user_id}", response_model=schemas.UserResponse)
 def update_user(user_id: int, user_data: schemas.UserUpdate, db: Session = Depends(get_db)):
-    db_user = crud.update_user(db, user_id=user_id, user_data=user_data)
-    if not db_user:
+    db_user_exists = crud.get_user(db, user_id=user_id)
+    if not db_user_exists:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Usuário não encontrado."
+            detail="Usuario nao encontrado."
         )
-    return db_user
+    
+    return crud.update_user(db, user_id=user_id, user_data=user_data)
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.delete_user(db, user_id=user_id)
-    if not db_user:
+    db_user_exists = crud.get_user(db, user_id=user_id)
+    if not db_user_exists:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Usuário não encontrado."
+            detail="Usuario nao encontrado."
         )
+        
+    crud.delete_user(db, user_id=user_id)
     return None

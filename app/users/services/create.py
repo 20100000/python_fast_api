@@ -23,5 +23,5 @@ def execute(db: Session, user: schemas.UserCreate):
         db.refresh(db_user)
         return db_user
     except SQLAlchemyError as e:
-        db.rollback()  # Mantem a seguran�a da sessao s�ncrona
+        db.rollback()
         raise DBRepositoryError("Erro ao persistir novo usuario.") from e

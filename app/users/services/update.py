@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from app.users import schemas
-from app.users.services import get  # Importa apenas o service de busca
+from app.users.services import get
 from app.users.services.exceptions import DBRepositoryError
 
 def execute(db: Session, user_id: int, user_data: schemas.UserUpdate):

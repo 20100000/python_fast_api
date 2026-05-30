@@ -35,10 +35,16 @@ meu-projeto-fastapi/
 │   │
 │   ├── users/              # Módulo isolado de Usuários
 │   │   ├── __init__.py
-│   │   ├── crud.py
 │   │   ├── models.py
 │   │   ├── router.py
 │   │   └── schemas.py
+|   │   └── services/
+│   │        ├── __init__.py
+│   │        ├── create.py
+│   │        ├── delete.py
+│   │        ├── exceptions.py
+│   │        ├── get.py
+│   │        └── update.py   
 │   │
 │   └──DB/ 
 │       ├── database.py       # Configuração de conexão global com o banco de dados

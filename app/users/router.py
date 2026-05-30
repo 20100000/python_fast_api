@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.DB.database import get_db
 from app.users import schemas
-from app.users.services import create, get, update, delete, exceptions
+from app.users.services import create, get, update, delete
 
 router = APIRouter(
     prefix="/users",
@@ -20,13 +20,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @router.get("/{user_id}", response_model=schemas.UserResponse)
 def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = get.by_id(db, user_id=user_id)
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            ddetail="Usuario nao encontrado."
-        )
-    return db_user
+    return get.by_id(db, user_id=user_id)
 
 @router.put("/{user_id}", response_model=schemas.UserResponse)
 def update_user(user_id: int, user_data: schemas.UserUpdate, db: Session = Depends(get_db)):

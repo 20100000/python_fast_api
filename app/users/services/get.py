@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -7,7 +8,14 @@ from app.users.services.exceptions import DBRepositoryError
 def by_id(db: Session, user_id: int):
     try:
         stmt = select(models.User).where(models.User.id == user_id)
-        return db.execute(stmt).scalar_one_or_none()
+        db_user = db.execute(stmt).scalar_one_or_none()
+
+        if not db_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Usurio nao encontrado."
+            )
+        return db_user
     except SQLAlchemyError as e:
         raise DBRepositoryError("Erro ao consultar id no banco.") from e
 

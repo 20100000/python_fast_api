@@ -38,7 +38,7 @@ meu-projeto-fastapi/
 │   │   ├── models.py
 │   │   ├── router.py
 │   │   └── schemas.py
-|   │   └── services/
+|   │   └── services/      # Operações de banco de dados (Query/Insert/Delete/update) dividida cada script com responsabilidade unica
 │   │        ├── __init__.py
 │   │        ├── create.py
 │   │        ├── delete.py

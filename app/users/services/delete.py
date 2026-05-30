@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from app.users.services import get
@@ -6,7 +7,10 @@ from app.users.services.exceptions import DBRepositoryError
 def execute(db: Session, user_id: int):
     db_user = get.by_id(db, user_id)
     if not db_user:
-        return None
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario nao encontrado."
+        )
     
     try:
         db.delete(db_user)

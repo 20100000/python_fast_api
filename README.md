@@ -7,6 +7,7 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 ## 🛠️ Tecnologias Utilizadas
 
 * **[Python 3.11](https://python.org)** - Linguagem de programação base.
+* **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automatico TDD.
 * **[FastAPI](https://tiangolo.com)** - Framework web focado em alta performance e documentação automatizada.
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
@@ -38,7 +39,6 @@ meu-projeto-fastapi/
 │   │   ├── models.py
 │   │   ├── router.py
 │   │   └── schemas.py
-
 |   │   └── services/      # Operações de banco de dados divididas por scripts com responsabilidade única
 │   │        ├── __init__.py
 │   │        ├── create.py
@@ -109,7 +109,7 @@ A suíte de testes utiliza **Pytest** integrado a um banco **SQLite em memória 
 
 ### Como Executar os Testes
 
-Para rodar todos os testes de maneira simplificada dentro do ambiente Docker já configurado, utilize o comando:
+Para rodar todos os testes de maneira simplificada dentro do ambiente Docker já configurado, lembrado de executar primeiro "docker compose up" utilize o comando:
 
 ```bash
 docker compose run --rm web pytest

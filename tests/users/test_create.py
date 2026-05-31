@@ -32,7 +32,6 @@ def test_create_user_email_already_exists(client, db_session):
     assert response.json()["detail"] == "Email ja cadastrado."
 
 def test_create_user_error(client, db_session):
-    """Testa o bloqueio de cadastro para e-mails já existentes."""
     existing_user = models.User(name="Ana", email="ana@example.com", password="123")
     db_session.add(existing_user)
     db_session.commit()
@@ -44,3 +43,5 @@ def test_create_user_error(client, db_session):
     }
     response = client.post("/users/", json=payload)
     assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "Input should be a valid string"
+

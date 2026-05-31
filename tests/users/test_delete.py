@@ -20,6 +20,5 @@ def test_delete_user_not_found(client, db_session):
     response = client.delete(f"/users/100")
     assert response.status_code == 404
 
-    # Verifica se o usuário foi deletado tentando buscá-lo novamente
     check_response = client.get(f"/users/100")
     assert check_response.status_code == 404

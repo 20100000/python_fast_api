@@ -25,3 +25,4 @@ def test_update_user_success(client, db_session):
     }
     response = client.put(f"/users/1000", json=update_payload)
     assert response.status_code == 404
+    assert response.json()["detail"] == "Usurio nao encontrado."

@@ -15,3 +15,4 @@ def test_read_user_by_id_success(client, db_session):
 def test_read_user_by_id_not_found(client, db_session):
     response = client.get(f"/users/1000")
     assert response.status_code == 404
+    assert response.json()["detail"] == "Usurio nao encontrado."

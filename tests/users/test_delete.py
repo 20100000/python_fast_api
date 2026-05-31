@@ -22,3 +22,4 @@ def test_delete_user_not_found(client, db_session):
 
     check_response = client.get(f"/users/100")
     assert check_response.status_code == 404
+    assert response.json()["detail"] == "Usurio nao encontrado."

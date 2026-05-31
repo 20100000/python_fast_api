@@ -15,7 +15,7 @@ def execute(db: Session, user_id: int):
     try:
         db.delete(db_user)
         db.commit()
-        return db_user
+        return None
     except SQLAlchemyError as e:
         db.rollback()
         raise DBRepositoryError("Erro ao deletar registro.") from e

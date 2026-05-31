@@ -38,7 +38,8 @@ meu-projeto-fastapi/
 │   │   ├── models.py
 │   │   ├── router.py
 │   │   └── schemas.py
-|   │   └── services/      # Operações de banco de dados (Query/Insert/Delete/update) dividida cada script com responsabilidade unica
+
+|   │   └── services/      # Operações de banco de dados divididas por scripts com responsabilidade única
 │   │        ├── __init__.py
 │   │        ├── create.py
 │   │        ├── delete.py
@@ -54,8 +55,20 @@ meu-projeto-fastapi/
 │           ├── users_seed.py
 │           └── run.py          # Orquestrador geral de execução dos seeds
 │ 
+├── tests/                  # Suíte de testes automatizados isolados
+│   ├── __init__.py
+│   ├── conftest.py          # Configurações globais e fixtures do SQLite em memória
+│   └── users/               # Módulos de testes focados em usuários (TDD)
+│       ├── __init__.py
+│       ├── test_create.py
+│       ├── test_delete.py
+│       ├── test_get_all.py
+│       ├── test_get_by_id.py
+│       └── test_update.py
+│
 ├── Dockerfile              # Configuração do contêiner da aplicação Python
 ├── docker-compose.yml      # Orquestração do FastAPI + PostgreSQL + Healthcheck
+├── pytest.ini              # Regras de execução e silenciamento de warnings do Pytest
 └── requirements.txt        # Dependências do ecossistema Python
 ```
 
@@ -66,7 +79,7 @@ meu-projeto-fastapi/
 ### Pré-requisitos
 Certifique-se de ter instalado em sua máquina:
 * [Git](https://git-scm.com)
-* [Docker & Docker Compose](https://docker.comproducts/docker-desktop/)
+* [Docker & Docker Compose](https://docker.com)
 
 ### Passo a Passo
 
@@ -90,7 +103,48 @@ Certifique-se de ter instalado em sua máquina:
 
 ---
 
-## 🧪 Como Testar pelo Swagger UI
+## 🧪 Testes Automatizados & TDD (Coverage)
+
+A suíte de testes utiliza **Pytest** integrado a um banco **SQLite em memória (`sqlite:///:memory:`)**. Isso garante o isolamento total dos testes sem corromper ou sujar os dados do banco PostgreSQL de desenvolvimento, permitindo fluxos rápidos de TDD.
+
+### Como Executar os Testes
+
+Para rodar todos os testes de maneira simplificada dentro do ambiente Docker já configurado, utilize o comando:
+
+```bash
+docker compose run --rm web pytest
+```
+
+### Comandos Úteis para Desenvolvimento Modular (TDD)
+
+* **Executar apenas o arquivo de criação de usuários (Foco em TDD):**
+  ```bash
+  docker compose run --rm web pytest tests/users/test_create.py
+  ```
+* **Aumentar o detalhamento das asserções executadas:**
+  ```bash
+  docker compose run --rm web pytest -v
+  ```
+
+### Métrica de Cobertura de Código (% Coverage)
+
+O projeto conta com o **`pytest-cov==7.1.0`** configurado diretamente no arquivo `pytest.ini`. Toda vez que os testes rodam, uma tabela de cobertura de scripts é impressa no terminal, apontando quais caminhos e linhas exatas do código não foram validados:
+
+```text
+---------- coverage: platform linux, python 3.11.15-final-0 ----------
+Name                            Stmts   Miss  Cover   Missing
+-------------------------------------------------------------
+app/__init__.py                     0      0   100%
+app/main.py                        13      2    85%   11-12
+app/users/router.py                20      0   100%
+app/users/services/create.py       18      0   100%
+-------------------------------------------------------------
+TOTAL                              95      2    97%
+```
+
+---
+
+## 🌐 Como Testar pelo Swagger UI
 
 O FastAPI gera uma documentação interativa fantástica por padrão. Para testar o CRUD completo (Users e Companies), siga os passos:
 

@@ -24,12 +24,13 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/code/app
+      - .:/code
     depends_on:
       db:
         condition: service_healthy 
     environment:
       - DATABASE_URL=postgresql://tiago:tiago123@db:5432/python_crud
+      - PYTHONPATH=/code
 
 volumes:
   postgres_data:

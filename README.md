@@ -171,4 +171,8 @@ O FastAPI gera uma documentação interativa fantástica por padrão. Para testa
 * **GitHub:** [@20100000](https://github.com/20100000)
 
 ---
+**Proximos passos Logo sera criado**
+Autenticação e Autorização: Implementação de segurança via JWT (JSON Web Tokens) ou OAuth2 para proteger as rotas.<br/>
+Migrações de Banco de Dados: Uso do Alembic para gerenciar alterações na estrutura das tabelas do PostgreSQL ao longo do tempo.<br/>
+CI/CD Pipeline: Arquivos de configuração (como GitHub Actions) para rodar os testes automaticamente a cada commit.<br/>
 Desenvolvido para fins de aprendizado de boas práticas em arquitetura de microsserviços com Python. 🌟

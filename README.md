@@ -12,6 +12,7 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
 * **[PostgreSQL 15](https://postgresql.org)** - Banco de dados relacional de produção.
+* **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para teste (TDD).
 * **[Docker & Docker Compose](https://docker.com)** - Criação de ambientes isolados e orquestração de contêineres.
 
 ---

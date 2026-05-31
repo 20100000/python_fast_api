@@ -40,7 +40,7 @@ meu-projeto-fastapi/
 │   │   ├── models.py
 │   │   ├── router.py
 │   │   └── schemas.py
-|   │   └── services/      # Operações de banco de dados divididas por scripts com responsabilidade única
+|   │   └── services/      # Operações de db divididas por scripts com responsabilidade única
 │   │        ├── __init__.py
 │   │        ├── create.py
 │   │        ├── delete.py

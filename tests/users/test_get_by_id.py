@@ -12,7 +12,7 @@ def test_read_user_by_id_success(client, db_session):
     assert response.status_code == 200
     assert response.json()["email"] == "carlos@ex.com"
 #Sad
-def test_read_user_by_id_not_found(client, db_session):
+def test_read_user_by_id_not_found(client):
     response = client.get(f"/users/1000")
     assert response.status_code == 404
     assert response.json()["detail"] == "Usurio nao encontrado."

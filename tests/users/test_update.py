@@ -18,7 +18,7 @@ def test_update_user_success(client, db_session):
     assert response.json()["name"] == "Marta Silva"
     assert response.json()["email"] == "marta.silva@ex.com"
 #Sad
-def test_update_user_not_faund(client, db_session):
+def test_update_user_not_faund(client):
     update_payload = {
         "name": "Marta Silva",
         "email": "marta.silva@ex.com"

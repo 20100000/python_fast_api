@@ -15,7 +15,7 @@ def test_delete_user_success(client, db_session):
     check_response = client.get(f"/users/{user.id}")
     assert check_response.status_code == 404
 #Sad
-def test_delete_user_not_found(client, db_session):
+def test_delete_user_not_found(client):
 
     response = client.delete(f"/users/100")
     assert response.status_code == 404

@@ -31,11 +31,7 @@ def test_create_user_email_already_exists(client, db_session):
     assert response.status_code == 400
     assert response.json()["detail"] == "Email ja cadastrado."
 
-def test_create_user_error(client, db_session):
-    existing_user = models.User(name="Ana", email="ana@example.com", password="123")
-    db_session.add(existing_user)
-    db_session.commit()
-
+def test_create_user_error(client):
     payload = {
         "name": None,
         "email": "ana@example.com",

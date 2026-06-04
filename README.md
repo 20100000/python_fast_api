@@ -173,15 +173,6 @@ docker compose run --rm web pytest
   ```bash
   docker compose run --rm web pytest -v
   ```
-
----
-
-## 👥 Autor
-
-* **Nome:** Tiago Honório
-* **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
-* **GitHub:** [@20100000](https://github.com/20100000)
-
 ---
 
 ## 🔄 Integração Contínua Automatizada (CI/CD Pipeline)
@@ -200,3 +191,11 @@ Toda vez que um novo código é enviado (`git push`) ou um **Pull Request (PR)**
 ---
 **Próximos passos Prontos para Desenvolvimento**<br/>
 * 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
+
+---
+
+## 👥 Autor
+
+* **Nome:** Tiago Honório
+* **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
+* **GitHub:** [@20100000](https://github.com/20100000)

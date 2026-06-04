@@ -12,7 +12,6 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
 * **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
-* **[Bcrypt 4.2.0](https://github.com)** - Criptografia nativa e segura para senhas.
 * **[PyJWT 2.10.1](https://readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
 * **[PostgreSQL 15](https://postgresql.org)** - Banco de dados relacional de produção.
 * **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para teste (TDD).
@@ -50,7 +49,6 @@ meu-projeto-fastapi/
 │   │   ├── models.py       # Inclusão do campo password criptografado
 │   │   ├── router.py
 │   │   ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-
 |   │   └── services/      
 │   │        ├── __init__.py
 │   │        ├── create.py  # Intercepta senhas e aplica hash antes de salvar
@@ -173,18 +171,6 @@ docker compose run --rm web pytest
   ```bash
   docker compose run --rm web pytest -v
   ```
-
----
-
-## 👥 Autor
-
-* **Nome:** Tiago Honório
-* **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
-* **GitHub:** [@20100000](https://github.com/20100000)
-
----
-**Próximos passos Prontos para Desenvolvimento**<br/>
-* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
 ---
 
 ## 🔄 Integração Contínua Automatizada (CI/CD Pipeline)
@@ -200,3 +186,14 @@ Toda vez que um novo código é enviado (`git push`) ou um **Pull Request (PR)**
 
 > 🛡️ **Garantia de Qualidade:** Se qualquer teste falhar ou quebrar as regras dos *JWT Guards*, a esteira ficará vermelha e o GitHub bloqueará automaticamente o merge do código na branch de produção até que o bug seja corrigido.
 
+---
+**Próximos passos Prontos para Desenvolvimento**<br/>
+* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
+
+---
+
+## 👥 Autor
+
+* **Nome:** Tiago Honório
+* **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
+* **GitHub:** [@20100000](https://github.com/20100000)

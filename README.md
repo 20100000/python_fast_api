@@ -50,7 +50,6 @@ meu-projeto-fastapi/
 │   │   ├── models.py       # Inclusão do campo password criptografado
 │   │   ├── router.py
 │   │   ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-
 |   │   └── services/      
 │   │        ├── __init__.py
 │   │        ├── create.py  # Intercepta senhas e aplica hash antes de salvar

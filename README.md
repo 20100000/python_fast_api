@@ -185,4 +185,3 @@ docker compose run --rm web pytest
 ---
 **Próximos passos Prontos para Desenvolvimento**<br/>
 * 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
-* 🚀 **CI/CD Pipeline:** Arquivos de configuração (como GitHub Actions) para rodar os testes automaticamente e validar os JWT Guards a cada Pull Request.

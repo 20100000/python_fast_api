@@ -5,9 +5,9 @@ services:
     image: postgres:15-alpine
     container_name: postgres_db
     environment:
-      POSTGRES_USER: tiago
-      POSTGRES_PASSWORD: tiago123
-      POSTGRES_DB: python_crud
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -29,8 +29,11 @@ services:
       db:
         condition: service_healthy 
     environment:
-      - DATABASE_URL=postgresql://tiago:tiago123@db:5432/python_crud
+      - DATABASE_URL=${DATABASE_URL}
       - PYTHONPATH=/code
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
 
 volumes:
   postgres_data:

@@ -1,9 +1,10 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from app.config import settings
 
 # Busca a URL do banco configurada no docker-compose
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://tiago:tiago123@db:5432/python_crud")
+DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

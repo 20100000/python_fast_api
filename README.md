@@ -1,16 +1,19 @@
 # 🚀 FastAPI Modular CRUD (Users & Companies)
 
-Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente conteinerizado utilizando **Docker** e **Docker Compose**, contando com um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
+Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)** via *Guards* inspirados no NestJS, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
 * **[Python 3.11](https://python.org)** - Linguagem de programação base.
-* **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automatico TDD.
+* **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automático TDD.
 * **[FastAPI](https://tiangolo.com)** - Framework web focado em alta performance e documentação automatizada.
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
+* **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
+* **[Bcrypt 4.2.0](https://github.com)** - Criptografia nativa e segura para senhas.
+* **[PyJWT 2.10.1](https://readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
 * **[PostgreSQL 15](https://postgresql.org)** - Banco de dados relacional de produção.
 * **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para teste (TDD).
 * **[Docker & Docker Compose](https://docker.com)** - Criação de ambientes isolados e orquestração de contêineres.
@@ -26,40 +29,48 @@ meu-projeto-fastapi/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── main.py             # Ponto de entrada da API e registro de rotas
+│   ├── main.py             # Ponto de entrada da API e registro de roteadores
+│   ├── config.py           # Leitura centralizada e tipada do arquivo .env
+│   │
+│   ├── auth/               # 🔐 NOVO: Módulo central de Segurança e Criptografia
+│   │   ├── __init__.py
+│   │   ├── guards.py       # Infraestrutura de Guards estilo NestJS (@router.UseGuards)
+│   │   ├── router.py       # Endpoint HTTP de Login (/auth/login)
+│   │   └── security.py     # Funções de hashing e validação do token JWT
 │   │
 │   ├── companies/          # Módulo isolado de Empresas
 │   │   ├── __init__.py
-│   │   ├── crud.py         # Operações de banco de dados (Query/Insert/Delete)
-│   │   ├── models.py       # Modelo da tabela do SQLAlchemy
-│   │   ├── router.py       # Endpoints HTTP da API
-│   │   └── schemas.py      # Esquemas de validação do Pydantic
+│   │   ├── crud.py         
+│   │   ├── models.py       
+│   │   ├── router.py       # Endpoints protegidos pelos Guards de autenticação
+│   │   └── schemas.py      
 │   │
 │   ├── users/              # Módulo isolado de Usuários
 │   │   ├── __init__.py
-│   │   ├── models.py
+│   │   ├── models.py       # Inclusão do campo password criptografado
 │   │   ├── router.py
-│   │   └── schemas.py
-|   │   └── services/      # Operações de db divididas por scripts com responsabilidade única
+│   │   ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
+
+|   │   └── services/      
 │   │        ├── __init__.py
-│   │        ├── create.py
+│   │        ├── create.py  # Intercepta senhas e aplica hash antes de salvar
 │   │        ├── delete.py
 │   │        ├── exceptions.py
 │   │        ├── get.py
-│   │        └── update.py   
+│   │        └── update.py  # Lógica centralizada para validação de Usuário Master
 │   │
 │   └──DB/ 
-│       ├── database.py       # Configuração de conexão global com o banco de dados
-|       └── seeds/            # Gerenciamento escalável de Seeds automáticos
+│       ├── database.py       # Conexão global consumindo a URL do config.py
+|       └── seeds/            
 │           ├── __init__.py
 │           ├── companies_seed.py
-│           ├── users_seed.py
-│           └── run.py          # Orquestrador geral de execução dos seeds
+│           ├── users_seed.py # Cadastra usuários de teste já criptografando a senha
+│           └── run.py          
 │ 
 ├── tests/                  # Suíte de testes automatizados isolados
 │   ├── __init__.py
-│   ├── conftest.py          # Configurações globais e fixtures do SQLite em memória
-│   └── users/               # Módulos de testes focados em usuários (TDD)
+│   ├── conftest.py          
+│   └── users/               
 │       ├── __init__.py
 │       ├── test_create.py
 │       ├── test_delete.py
@@ -67,10 +78,11 @@ meu-projeto-fastapi/
 │       ├── test_get_by_id.py
 │       └── test_update.py
 │
-├── Dockerfile              # Configuração do contêiner da aplicação Python
-├── docker-compose.yml      # Orquestração do FastAPI + PostgreSQL + Healthcheck
-├── pytest.ini              # Regras de execução e silenciamento de warnings do Pytest
-└── requirements.txt        # Dependências do ecossistema Python
+├── .env                    # Arquivo de configuração de segredos (Ignorado no Git)
+├── Dockerfile              
+├── docker-compose.yml      # Configuração limpa usando variáveis estruturadas ${}
+├── pytest.ini              
+└── requirements.txt        
 ```
 
 ---
@@ -90,17 +102,52 @@ Certifique-se de ter instalado em sua máquina:
    cd python_fast_api
    ```
 
-2. **Inicie os contêineres do Docker:**
-   O comando abaixo fará o download do PostgreSQL, instalará as dependências do Python, criará as tabelas de forma automática e aplicará as sementes de dados iniciais.
+2. **Configure o arquivo `.env`:**
+   Crie um arquivo chamado `.env` na raiz do projeto (ao lado do `docker-compose.yml`) e preencha com as suas chaves e dados de banco:
+   ```env
+   SECRET_KEY=sua_chave_secreta_super_longa_e_segura_de_producao_123!
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+   POSTGRES_USER=tiago
+   POSTGRES_PASSWORD=tiago123
+   POSTGRES_DB=python_crud
+
+   DATABASE_URL=postgresql://tiago:tiago123@db:5432/python_crud
+   ```
+
+3. **Inicie os contêineres do Docker:**
+   O comando abaixo fará o download do PostgreSQL, aplicará as variáveis de chaves `${}`, instalará as dependências, criará as tabelas de forma automática e rodará as sementes (*Seeds*) de usuários criptografados.
    ```bash
    docker compose up --build
    ```
 
-3. **Acompanhe a inicialização:**
-   Aguarde até visualizar a mensagem de sucesso no terminal informando que o servidor web está online:
+4. **Acompanhe a inicialização:**
+   Aguarde até visualizar a mensagem de sucesso informando que os seeds rodaram e o servidor web está online:
    ```text
+   fastapi_app  | Seed: Usuário Tiago Administrador criado com sucesso.
    fastapi_app  | INFO:     Uvicorn running on http://0.0.0 (Press CTRL+C to quit)
    ```
+
+---
+
+## 🔒 Autenticação & Como Testar via Swagger UI
+
+A API possui rotas protegidas que impedem acessos anônimos, utilizando decoradores avançados baseados em *Guards* estilo NestJS (`@router.UseGuards(JwtAuthGuard)`). Para testar o ecossistema completo autenticado, siga o passo a passo:
+
+1. Abra o navegador em: **[http://localhost:8000/docs](http://localhost:8000/docs)**
+2. Você notará um botão global chamado **"Authorize"** com o ícone de um cadeado no topo direito, e pequenos cadeados ao lado das rotas privadas (como `GET /companies/`).
+3. **Efetuando o Login no Sistema:**
+   * Clique no botão global **"Authorize"** no topo da página.
+   * Uma janela de formulário nativo vai se abrir.
+   * No campo **username**, digite o e-mail criado pelo seed: `admin@gmail.com`
+   * No campo **password**, digite a senha padrão: `test`
+   * Deixe os campos *client_id* e *client_secret* vazios e clique no botão **Authorize**.
+   * Clique em *Close*. O cadeado global ficará **trancado e verde**.
+4. **Testando as Rotas Protegidas:**
+   * Com o cadeado trancado, expanda a rota `GET /companies/` ou `GET /users/{user_id}`.
+   * Clique em **"Try it out"** e depois em **"Execute"**.
+   * O Swagger injetará automaticamente o cabeçalho `-H 'Authorization: Bearer <token>'` nos bastidores e trará os dados com sucesso (`200 OK`). O token carregará no seu payload decodificado o e-mail (`sub`), o `name` e o `id` do usuário logado.
 
 ---
 
@@ -127,41 +174,6 @@ docker compose run --rm web pytest
   docker compose run --rm web pytest -v
   ```
 
-### Métrica de Cobertura de Código (% Coverage)
-
-O projeto conta com o **`pytest-cov==7.1.0`** configurado diretamente no arquivo `pytest.ini`. Toda vez que os testes rodam, uma tabela de cobertura de scripts é impressa no terminal, apontando quais caminhos e linhas exatas do código não foram validados:
-
-```text
----------- coverage: platform linux, python 3.11.15-final-0 ----------
-Name                            Stmts   Miss  Cover   Missing
--------------------------------------------------------------
-app/__init__.py                     0      0   100%
-app/main.py                        13      2    85%   11-12
-app/users/router.py                20      0   100%
-app/users/services/create.py       18      0   100%
--------------------------------------------------------------
-TOTAL                              95      2    97%
-```
-
----
-
-## 🌐 Como Testar pelo Swagger UI
-
-O FastAPI gera uma documentação interativa fantástica por padrão. Para testar o CRUD completo (Users e Companies), siga os passos:
-
-1. Abra o seu navegador e acesse: **[http://localhost:8000/docs](http://localhost:8000/docs)**
-2. Você verá as rotas separadas de forma organizada por blocos (`users`, `companies` e `Health Check`).
-3. **Testando uma Rota (Exemplo: Listar Usuários):**
-   * Clique em `GET /users/`.
-   * Clique no botão **"Try it out"** no canto direito.
-   * Clique no botão azul **"Execute"**.
-   * O Swagger mostrará a resposta real retornada pelo PostgreSQL, contendo inclusive os dados pré-carregados pelos *Seeds* automatizados com suas respectivas datas de criação e atualização.
-4. **Testando uma Criação (Exemplo: Nova Empresa):**
-   * Clique em `POST /companies/`.
-   * Clique em **"Try it out"**.
-   * Altere os dados no JSON do campo de texto informando o nome e o CNPJ desejados.
-   * Clique em **"Execute"** para efetivar o cadastro no banco.
-
 ---
 
 ## 👥 Autor
@@ -171,8 +183,6 @@ O FastAPI gera uma documentação interativa fantástica por padrão. Para testa
 * **GitHub:** [@20100000](https://github.com/20100000)
 
 ---
-**Proximos passos Logo sera criado**<br/>
-Autenticação e Autorização: Implementação de segurança via JWT (JSON Web Tokens) ou OAuth2 para proteger as rotas.<br/>
-Migrações de Banco de Dados: Uso do Alembic para gerenciar alterações na estrutura das tabelas do PostgreSQL ao longo do tempo.<br/>
-CI/CD Pipeline: Arquivos de configuração (como GitHub Actions) para rodar os testes automaticamente a cada commit.<br/>
-Desenvolvido para fins de aprendizado de boas práticas em arquitetura de microsserviços com Python. 🌟
+**Próximos passos Prontos para Desenvolvimento**<br/>
+* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
+* 🚀 **CI/CD Pipeline:** Arquivos de configuração (como GitHub Actions) para rodar os testes automaticamente e validar os JWT Guards a cada Pull Request.

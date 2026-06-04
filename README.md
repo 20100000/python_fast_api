@@ -183,9 +183,6 @@ docker compose run --rm web pytest
 * **GitHub:** [@20100000](https://github.com/20100000)
 
 ---
-**Próximos passos Prontos para Desenvolvimento**<br/>
-* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
----
 
 ## 🔄 Integração Contínua Automatizada (CI/CD Pipeline)
 
@@ -200,3 +197,6 @@ Toda vez que um novo código é enviado (`git push`) ou um **Pull Request (PR)**
 
 > 🛡️ **Garantia de Qualidade:** Se qualquer teste falhar ou quebrar as regras dos *JWT Guards*, a esteira ficará vermelha e o GitHub bloqueará automaticamente o merge do código na branch de produção até que o bug seja corrigido.
 
+---
+**Próximos passos Prontos para Desenvolvimento**<br/>
+* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.

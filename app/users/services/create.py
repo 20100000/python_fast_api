@@ -4,6 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.users import models, schemas
 from app.users.services import get
 from app.users.services.exceptions import DBRepositoryError
+from app.auth.security import hash_password
 
 def execute(db: Session, user: schemas.UserCreate):
     db_user = get.by_email(db, email=user.email)
@@ -12,10 +13,11 @@ def execute(db: Session, user: schemas.UserCreate):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email ja cadastrado."
         )
+    hashed_pwd = hash_password(user.password)
     db_user = models.User(
         name=user.name,
         email=user.email,
-        password=user.password
+        password=hashed_pwd
     )
     try:
         db.add(db_user)

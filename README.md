@@ -12,7 +12,6 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
 * **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
-* **[Bcrypt 4.2.0](https://github.com)** - Criptografia nativa e segura para senhas.
 * **[PyJWT 2.10.1](https://readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
 * **[PostgreSQL 15](https://postgresql.org)** - Banco de dados relacional de produção.
 * **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para teste (TDD).

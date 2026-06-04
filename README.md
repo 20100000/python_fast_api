@@ -185,3 +185,18 @@ docker compose run --rm web pytest
 ---
 **Próximos passos Prontos para Desenvolvimento**<br/>
 * 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
+---
+
+## 🔄 Integração Contínua Automatizada (CI/CD Pipeline)
+
+O projeto conta com uma esteira de **Integração Contínua (CI)** totalmente automatizada via **GitHub Actions** (configurada em `.github/workflows/ci.yml`).
+
+Toda vez que um novo código é enviado (`git push`) ou um **Pull Request (PR)** é aberto para a branch principal (`main`), o GitHub dispara automaticamente um gatilho que executa os seguintes passos em um servidor isolado:
+
+1. **Setup do Ambiente:** Instalação do Python 3.11 com gerenciamento inteligente de cache para acelerar o processo.
+2. **Isolamento de Configurações:** Criação dinâmica de um arquivo `.env` temporário de testes para satisfazer as validações de inicialização do `Pydantic Settings`.
+3. **Instalação de Dependências:** Instalação limpa de todos os pacotes do `requirements.txt`.
+4. **Validação de Código (Pytest):** Execução automatizada da suíte completa de testes baseada em **SQLite em memória**.
+
+> 🛡️ **Garantia de Qualidade:** Se qualquer teste falhar ou quebrar as regras dos *JWT Guards*, a esteira ficará vermelha e o GitHub bloqueará automaticamente o merge do código na branch de produção até que o bug seja corrigido.
+

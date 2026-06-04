@@ -27,5 +27,6 @@ def login(
     access_token = create_access_token(
         data={"sub": user.email, "name": user.name, "id": user.id}, expires_delta=access_token_expires
     )
+    del user.password
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user": user}

@@ -1,6 +1,7 @@
 import pytest
 from app.users import models
 
+#Happy
 def test_read_users_list(auth_client, db_session):
     """Testa o retorno de múltiplos usuários na listagem."""
     user1 = models.User(name="User 1", email="u1@ex.com", password="1")
@@ -11,5 +12,5 @@ def test_read_users_list(auth_client, db_session):
     response = auth_client.get("/users/?skip=0&limit=10")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 3
+    assert len(data) == 3 # 3 pq tem um que o script conftest cria para fazer teste de um usuário autenticado
     assert data[0]["email"] == "tdd@email.com"

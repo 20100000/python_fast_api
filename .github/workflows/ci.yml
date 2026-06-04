@@ -35,7 +35,7 @@ jobs:
 
       # 2. Configura a versão correta do Python
       - name: Set up Python 3.11
-        uses: actions/with-python@v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip' # Otimiza o tempo de pipeline salvando o cache do pip

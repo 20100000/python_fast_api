@@ -5,6 +5,7 @@ from app.companies.router import router as companies_router
 from app.DB.seeds.run import run_all_seeds
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth.router import router as auth_router
+from app.products.router import router as products_router
 
 # 1. Cria as tabelas no banco de dados automaticamente se não existirem
 Base.metadata.create_all(bind=engine)
@@ -42,5 +43,6 @@ def read_root():
 
 # Inclui as rotas e módulos
 app.include_router(auth_router)
-app.include_router(users_router)
 app.include_router(companies_router)
+app.include_router(products_router)
+app.include_router(users_router)

@@ -28,7 +28,6 @@ def read_user(user_id: int, db: Session = Depends(get_db), current_user: UserMod
 def update_user(user_id: int, user_data: schemas.UserUpdate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return update.execute(db, user_id=user_id, user_data=user_data)
 
-
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return delete.execute(db, user_id=user_id)

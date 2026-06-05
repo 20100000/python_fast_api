@@ -50,7 +50,7 @@ def test_login_incorrect_password(client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json()["detail"] == "E-mail ou senha incorretos"
 
-def test_login_incorrect_email_already_exists(client):
+def test_login_incorrect_email_not_exists(client):
     form_data = {
         "username": "nao_existo@teste.com",
         "password": "qualquer_senha"

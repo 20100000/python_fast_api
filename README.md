@@ -33,7 +33,6 @@ meu-projeto-fastapi/
 │   │
 │   ├── auth/               # 🔐 NOVO: Módulo central de Segurança e Criptografia
 │   │   ├── __init__.py
-│   │   ├── guards.py       # Infraestrutura de Guards estilo NestJS (@router.UseGuards)
 │   │   ├── router.py       # Endpoint HTTP de Login (/auth/login)
 │   │   └── security.py     # Funções de hashing e validação do token JWT
 │   │

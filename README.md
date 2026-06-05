@@ -1,6 +1,6 @@
-# 🚀 FastAPI Modular CRUD (Users & Companies)
+# 🚀 FastAPI Modular CRUD (Users, Companies & Products)
 
-Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)** via *Guards* inspirados no NestJS, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
+Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)** via *Guards* inspirados no NestJS, versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
 
 ---
 
@@ -10,6 +10,7 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 * **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automático TDD.
 * **[FastAPI](https://tiangolo.com)** - Framework web focado em alta performance e documentação automatizada.
 * **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
+* **[Alembic 1.13](https://sqlalchemy.org)** - Controle e versionamento de alterações do banco de dados.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
 * **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
 * **[PyJWT 2.10.1](https://readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
@@ -31,7 +32,7 @@ meu-projeto-fastapi/
 │   ├── main.py             # Ponto de entrada da API e registro de roteadores
 │   ├── config.py           # Leitura centralizada e tipada do arquivo .env
 │   │
-│   ├── auth/               # 🔐 NOVO: Módulo central de Segurança e Criptografia
+│   ├── auth/               # 🔐 Módulo central de Segurança e Criptografia
 │   │   ├── __init__.py
 │   │   ├── router.py       # Endpoint HTTP de Login (/auth/login)
 │   │   └── security.py     # Funções de hashing e validação do token JWT
@@ -43,12 +44,19 @@ meu-projeto-fastapi/
 │   │   ├── router.py       # Endpoints protegidos pelos Guards de autenticação
 │   │   └── schemas.py      
 │   │
+│   ├── products/           # 📦 NOVO: Módulo isolado de Produtos
+│   │   ├── __init__.py
+│   │   ├── services/       # Camada de regras de negócio
+│   │   ├── models.py       # Modelo SQLAlchemy 2.0 (Tabela: products)
+│   │   ├── router.py       # Endpoints da API com carregamento joinedload
+│   │   └── schemas.py      # Schemas de validação de dados Pydantic V2
+│   │
 │   ├── users/              # Módulo isolado de Usuários
 │   │   ├── __init__.py
 │   │   ├── models.py       # Inclusão do campo password criptografado
 │   │   ├── router.py
 │   │   ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-|   │   └── services/      
+│   │   └── services/      
 │   │        ├── __init__.py
 │   │        ├── create.py  # Intercepta senhas e aplica hash antes de salvar
 │   │        ├── delete.py
@@ -56,9 +64,13 @@ meu-projeto-fastapi/
 │   │        ├── get.py
 │   │        └── update.py  # Lógica centralizada para validação de Usuário Master
 │   │
-│   └──DB/ 
-│       ├── database.py       # Conexão global consumindo a URL do config.py
-|       └── seeds/            
+│   └── DB/ 
+│       ├── database.py     # Conexão global consumindo a URL do config.py
+│       ├── migrations/     # 🔄 NOVO: Histórico e scripts de migração do Alembic
+│       │   ├── versions/   # Arquivos de migração gerados automaticamente (.py)
+│       │   ├── env.py      # Script de execução do ambiente Alembic
+│       │   └── script.py.mako
+│       └── seeds/            
 │           ├── __init__.py
 │           ├── companies_seed.py
 │           ├── users_seed.py # Cadastra usuários de teste já criptografando a senha
@@ -67,15 +79,17 @@ meu-projeto-fastapi/
 ├── tests/                  # Suíte de testes automatizados isolados
 │   ├── __init__.py
 │   ├── conftest.py          
-│   └── users/               
-│       ├── __init__.py
-│       ├── test_create.py
-│       ├── test_delete.py
-│       ├── test_get_all.py
-│       ├── test_get_by_id.py
-│       └── test_update.py
+│   ├── users/               
+│   │   ├── __init__.py
+│   │   ├── test_create.py
+│   │   ├── test_delete.py
+│   │   ├── test_get_all.py
+│   │   ├── test_get_by_id.py
+│   │   └── test_update.py
+│   └── products/           # Testes automatizados do recurso de produtos
 │
 ├── .env                    # Arquivo de configuração de segredos (Ignorado no Git)
+├── alembic.ini             # Configuração global de caminhos do Alembic
 ├── Dockerfile              
 ├── docker-compose.yml      # Configuração limpa usando variáveis estruturadas ${}
 ├── pytest.ini              
@@ -114,7 +128,7 @@ Certifique-se de ter instalado em sua máquina:
    ```
 
 3. **Inicie os contêineres do Docker:**
-   O comando abaixo fará o download do PostgreSQL, aplicará as variáveis de chaves `${}`, instalará as dependências, criará as tabelas de forma automática e rodará as sementes (*Seeds*) de usuários criptografados.
+   O comando abaixo fará o download do PostgreSQL, aplicará as variáveis de chaves `${}`, instalará as dependências estruturais, executará os procedimentos iniciais e subirá o servidor.
    ```bash
    docker compose up --build
    ```
@@ -125,6 +139,24 @@ Certifique-se de ter instalado em sua máquina:
    fastapi_app  | Seed: Usuário Tiago Administrador criado com sucesso.
    fastapi_app  | INFO:     Uvicorn running on http://0.0.0 (Press CTRL+C to quit)
    ```
+
+---
+
+## 🔄 Migrações com Alembic (Docker)
+
+O versionamento estrutural do banco de dados (PostgreSQL) é controlado via Alembic. Toda modificação em arquivos `models.py` deve ser acompanhada do fluxo abaixo utilizando o contêiner `web`:
+
+### 1. Criar script de migrate
+Compare as suas classes de model atuais com o estado do banco e gere de forma automática o arquivo com as alterações na pasta `versions/`:
+```bash
+docker compose run --rm web alembic revision --autogenerate -m "create_products_table"
+```
+
+### 2. Enviar para o banco de dados
+Para rodar as atualizações estruturais pendentes e criar efetivamente as tabelas e colunas correspondentes dentro do banco PostgreSQL, execute:
+```bash
+docker compose run --rm web alembic upgrade head
+```
 
 ---
 
@@ -154,7 +186,7 @@ A suíte de testes utiliza **Pytest** integrado a um banco **SQLite em memória 
 
 ### Como Executar os Testes
 
-Para rodar todos os testes de maneira simplificada dentro do ambiente Docker já configurado, lembrado de executar primeiro "docker compose up" utilize o comando:
+Para rodar todos os testes de maneira simplificada dentro do ambiente Docker já configurado, lembrando de executar primeiro `docker compose up`, utilize o comando:
 
 ```bash
 docker compose run --rm web pytest
@@ -170,29 +202,10 @@ docker compose run --rm web pytest
   ```bash
   docker compose run --rm web pytest -v
   ```
+
 ---
 
 ## 🔄 Integração Contínua Automatizada (CI/CD Pipeline)
 
 O projeto conta com uma esteira de **Integração Contínua (CI)** totalmente automatizada via **GitHub Actions** (configurada em `.github/workflows/ci.yml`).
 
-Toda vez que um novo código é enviado (`git push`) ou um **Pull Request (PR)** é aberto para a branch principal (`main`), o GitHub dispara automaticamente um gatilho que executa os seguintes passos em um servidor isolado:
-
-1. **Setup do Ambiente:** Instalação do Python 3.11 com gerenciamento inteligente de cache para acelerar o processo.
-2. **Isolamento de Configurações:** Criação dinâmica de um arquivo `.env` temporário de testes para satisfazer as validações de inicialização do `Pydantic Settings`.
-3. **Instalação de Dependências:** Instalação limpa de todos os pacotes do `requirements.txt`.
-4. **Validação de Código (Pytest):** Execução automatizada da suíte completa de testes baseada em **SQLite em memória**.
-
-> 🛡️ **Garantia de Qualidade:** Se qualquer teste falhar ou quebrar as regras dos *JWT Guards*, a esteira ficará vermelha e o GitHub bloqueará automaticamente o merge do código na branch de produção até que o bug seja corrigido.
-
----
-**Próximos passos Prontos para Desenvolvimento**<br/>
-* 🗄️ **Migrações de Banco de Dados:** Uso do Alembic para gerenciar alterações e controle de versão na estrutura das tabelas do PostgreSQL de forma profissional.
-
----
-
-## 👥 Autor
-
-* **Nome:** Tiago Honório
-* **Email:** [tiago_honorio2010@hotmail.com](mailto:tiago_honorio2010@hotmail.com)
-* **GitHub:** [@20100000](https://github.com/20100000)

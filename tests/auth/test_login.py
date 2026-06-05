@@ -30,6 +30,7 @@ def test_login_sucess(client, create_user_login):
 
     response_data = response.json()
     assert "access_token" in response_data
+    assert "user" in response_data
     assert response_data["token_type"] == "bearer"
 
     assert "user" in response_data
@@ -49,8 +50,7 @@ def test_login_incorrect_password(client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json()["detail"] == "E-mail ou senha incorretos"
 
-
-def test_login_incorrect_not_existent(client):
+def test_login_incorrect_email_not_exists(client):
     form_data = {
         "username": "nao_existo@teste.com",
         "password": "qualquer_senha"

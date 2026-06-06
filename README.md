@@ -37,33 +37,33 @@ meu-projeto-fastapi/
 │   │   ├── router.py       # Endpoint HTTP de Login (/auth/login)
 │   │   └── security.py     # Funções de hashing e validação do token JWT
 │   │
-│   ├── companies/          # Módulo isolado de Empresas
-│   │   ├── __init__.py
-│   │   ├── crud.py         
-│   │   ├── models.py       
-│   │   ├── router.py       # Endpoints protegidos pelos Guards de autenticação
-│   │   └── schemas.py      
-│   │
-│   ├── products/           # 📦 NOVO: Módulo isolado de Produtos
-│   │   ├── __init__.py
-│   │   ├── services/       # Camada de regras de negócio
-│   │   ├── models.py       # Modelo SQLAlchemy 2.0 (Tabela: products)
-│   │   ├── router.py       # Endpoints da API com carregamento joinedload
-│   │   └── schemas.py      # Schemas de validação de dados Pydantic V2
-│   │
-│   ├── users/              # Módulo isolado de Usuários
-│   │   ├── __init__.py
-│   │   ├── models.py       # Inclusão do campo password criptografado
-│   │   ├── router.py
-│   │   ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-│   │   └── services/      
-│   │        ├── __init__.py
-│   │        ├── create.py  # Intercepta senhas e aplica hash antes de salvar
-│   │        ├── delete.py
-│   │        ├── exceptions.py
-│   │        ├── get.py
-│   │        └── update.py  # Lógica centralizada para validação de Usuário Master
-│   │
+│   │           ├── companies/          # Módulo isolado de Empresas
+│   │           │   ├── __init__.py
+│   │           │   ├── crud.py         #Não indicado fazer dessa forma varias resposabilidades para um unico script   
+│   │           │   ├── models.py       
+│   │           │   ├── router.py       # Endpoints protegidos pelos Guards de autenticação
+│   │           │   └── schemas.py      
+│   │           │
+│   │           ├── products/           # 📦 NOVO: Módulo isolado de Produtos
+│   ├── api/────├── __init__.py
+│   │           │   ├── services/       # Camada de regras de negócio separaçõa de responsabilidade dos scripts
+│   │           │   ├── models.py       # Modelo SQLAlchemy 2.0 (Tabela: products)
+│   │           │   ├── router.py       # Endpoints da API com carregamento joinedload
+│   │           │   └── schemas.py      # Schemas de validação de dados Pydantic V2
+│   │           │
+│   │           └──users/              # Módulo isolado de Usuários
+│   │               ├── __init__.py
+│   │               ├── models.py       # Inclusão do campo password criptografado
+│   │               ├── router.py
+│   │               ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
+│   │               └── services/      
+│   │                    ├── __init__.py
+│   │                    ├── create.py  # Intercepta senhas e aplica hash antes de salvar
+│   │                    ├── delete.py
+│   │                    ├── exceptions.py
+│   │                    ├── get.py
+│   │                    └── update.py  # Lógica centralizada para validação de Usuário Master
+│   │        
 │   └── DB/ 
 │       ├── database.py     # Conexão global consumindo a URL do config.py
 │       ├── migrations/     # 🔄 NOVO: Histórico e scripts de migração do Alembic

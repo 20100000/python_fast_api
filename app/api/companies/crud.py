@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
-from app.companies import models, schemas
+from app.api.companies import schemas
+from app.api.companies import models
+
 
 def get_company(db: Session, company_id: int):
     return db.query(models.Company).filter(models.Company.id == company_id).first()

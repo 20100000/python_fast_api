@@ -11,9 +11,6 @@ sys.path.insert(0, abspath(dirname(dirname(dirname(dirname(__file__))))))
 # 1. IMPORTANTE: Importe o Config e a Base do seu projeto para o autogenerate funcionar
 from app.config import settings  # Ajuste o nome da sua classe/variável se necessário
 from app.DB.database import Base
-from app.users.models import User
-from app.companies.models import Company
-from app.products.models import Product
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

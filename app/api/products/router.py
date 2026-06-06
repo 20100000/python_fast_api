@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.DB.database import get_db
-from app.products import schemas
-from app.products.services import create, get, update, delete
+from app.api.products import schemas
+from app.api.products.services import get, update, create, delete
 from app.auth.security import get_current_user
-from app.users.models import User as UserModel
+from app.api.users.models import User as UserModel
 
 router = APIRouter(
     prefix="/products",
@@ -17,7 +17,7 @@ def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)
     return create.execute(db=db, product=product)
 
 @router.get("/", response_model=List[schemas.ProductResponse])
-def read_product(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+def read_product(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user), skip: int = 0, limit: int = 100):
     return get.all_products(db, skip=skip, limit=limit)
 
 @router.get("/{product_id}", response_model=schemas.ProductResponse)

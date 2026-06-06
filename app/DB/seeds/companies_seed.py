@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.companies.models import Company
+from app.api.companies.models import Company
 
 def seed_companies(db: Session):
     companies_data = [

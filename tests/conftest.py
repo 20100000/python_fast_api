@@ -6,7 +6,7 @@ from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.DB.database import Base, get_db
-from app.users.models import User as UserModel
+from app.api.users.models import User as UserModel
 from app.auth.security import hash_password, create_access_token
 
 # 1. Configura um banco de dados SQLite temporário para os testes

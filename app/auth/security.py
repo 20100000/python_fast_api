@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from app.DB.database import get_db
-from app.users.models import User as UserModel
+from app.api.users.models import User as UserModel
 from app.config import settings
 
 # Configurações do JWT (Em produção, mova para variáveis de ambiente)

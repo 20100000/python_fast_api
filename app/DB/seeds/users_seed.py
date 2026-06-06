@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.users.models import User
+from app.api.users.models import User
 from app.auth.security import hash_password
 
 def seed_users(db: Session):

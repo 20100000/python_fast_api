@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
-from app.products import models
+from app.api.products import models
 from app.util.exceptions import DBRepositoryError
 from sqlalchemy.orm import joinedload
 

@@ -6,9 +6,9 @@ def seed_users(db: Session):
     # Lista de dados que você quer inserir
     hashed_pwd = hash_password('test')
     users_data = [
-        {"name": "Tiago Administrador", "email": "admin@gmail.com", "password": hashed_pwd},
-        {"name": "Maria Silva", "email": "maria@email.com", "password": hashed_pwd},
-        {"name": "João Souza", "email": "joao@email.com", "password": hashed_pwd}
+        {"name": "Tiago Administrador", "email": "admin@gmail.com", "password": hashed_pwd, "admin": True},
+        {"name": "Maria Silva", "email": "maria@email.com", "password": hashed_pwd, "admin": False},
+        {"name": "João Souza", "email": "joao@email.com", "password": hashed_pwd, "admin": False}
     ]
 
     for user_info in users_data:

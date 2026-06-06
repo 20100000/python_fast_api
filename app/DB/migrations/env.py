@@ -78,3 +78,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+    # docker compose exec fastapi_app alembic revision --autogenerate -m "add_admin_to_user"

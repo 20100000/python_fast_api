@@ -41,7 +41,7 @@ meu-projeto-fastapi/
 │   │           │   ├── __init__.py
 │   │           │   ├── crud.py         #Não indicado fazer dessa forma varias resposabilidades para um unico script   
 │   │           │   ├── models.py       
-│   │           │   ├── router.py       # Endpoints protegidos pelos Guards de autenticação
+│   │           │   ├── router.py       # Script de router muito complexo e dificil manutenção
 │   │           │   └── schemas.py      
 │   │           │
 │   │           ├── products/           # 📦 NOVO: Módulo isolado de Produtos

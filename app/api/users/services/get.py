@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
-from app.users import models
+from app.api.users import models
 from app.util.exceptions import DBRepositoryError
 
 def by_id(db: Session, user_id: int):

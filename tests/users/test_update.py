@@ -1,10 +1,11 @@
 import pytest
-from app.users import models
+from app.api.users.models import User
+
 
 #Happy
 def test_update_user_success(auth_client, db_session):
     """Testa a atualização parcial ou total dos dados do usuário."""
-    user = models.User(name="Marta", email="marta@ex.com", password="1")
+    user = User(name="Marta", email="marta@ex.com", password="1")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)

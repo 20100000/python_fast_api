@@ -1,9 +1,11 @@
 import pytest
-from app.users import models
+from app.api.users.models import User
+
+
 #Happy
 def test_delete_user_success(auth_client, db_session):
     """Testa a exclusão de um usuário existente."""
-    user = models.User(name="Roberto", email="roberto@ex.com", password="1")
+    user = User(name="Roberto", email="roberto@ex.com", password="1")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)

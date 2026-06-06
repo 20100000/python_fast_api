@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from app.DB.database import engine, Base
-from app.users.router import router as users_router
-from app.companies.router import router as companies_router
+from app.api.users.router import router as users_router
+from app.api.companies.router import router as companies_router
 from app.DB.seeds.run import run_all_seeds
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth.router import router as auth_router
-from app.products.router import router as products_router
+from app.api.products.router import router as products_router
+
 
 # 1. Cria as tabelas no banco de dados automaticamente se não existirem
 Base.metadata.create_all(bind=engine)

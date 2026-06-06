@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from app.products import models, schemas
+from app.api.products import schemas, models
 from app.util.exceptions import DBRepositoryError
 
 def execute(db: Session, product: schemas.ProductCreate):

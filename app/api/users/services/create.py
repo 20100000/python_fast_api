@@ -1,8 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from app.users import models, schemas
-from app.users.services import get
+from app.api.users import models, schemas
+from app.api.users.services import get
 from app.util.exceptions import DBRepositoryError
 from app.auth.security import hash_password
 

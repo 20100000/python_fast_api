@@ -1,9 +1,11 @@
 import pytest
-from app.users import models
+from app.api.users.models import User
+
+
 #Happy
 def test_read_user_by_id_success(auth_client, db_session):
     """Testa a busca de um usuário específico por ID."""
-    user = models.User(name="Carlos", email="carlos@ex.com", password="1")
+    user = User(name="Carlos", email="carlos@ex.com", password="1")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)

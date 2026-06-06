@@ -1,5 +1,7 @@
 import pytest
-from app.users import models
+from app.api.users.models import User
+
+
 #Happy
 def test_create_user_success(client):
     """Testa a criação de um usuário com dados válidos."""
@@ -18,7 +20,7 @@ def test_create_user_success(client):
 #Sad
 def test_create_user_email_already_exists(client, db_session):
     """Testa o bloqueio de cadastro para e-mails já existentes."""
-    existing_user = models.User(name="Ana", email="ana@example.com", password="123")
+    existing_user = User(name="Ana", email="ana@example.com", password="123")
     db_session.add(existing_user)
     db_session.commit()
 

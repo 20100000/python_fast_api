@@ -1,6 +1,6 @@
 import pytest
 from fastapi import status
-from app.users.models import User as UserModel
+from app.api.users.models import User as UserModel
 from passlib.context import CryptContext
 from app.auth.security import hash_password
 

@@ -1,25 +1,21 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from app.products import schemas
-from app.products.services import get
 from app.util.exceptions import DBRepositoryError
+from app.api.products.services import get
 
-def execute(db: Session, product_id: int, product_data: schemas.ProductUpdate):
+def execute(db: Session, product_id: int):
     db_product = get.by_id(db, product_id)
     if not db_product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Produto nao encontrado."
         )
-
+    
     try:
-        update_data = product_data.model_dump(exclude_unset=True)
-        for key, value in update_data.items():
-            setattr(db_product, key, value)
+        db.delete(db_product)
         db.commit()
-        db.refresh(db_product)
-        return db_product
+        return None
     except SQLAlchemyError as e:
         db.rollback()
-        raise DBRepositoryError("Erro ao atualizar registro.") from e
+        raise DBRepositoryError("Erro ao deletar registro.") from e

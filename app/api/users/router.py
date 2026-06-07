@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.DB.database import get_db
 from app.api.users import schemas
-from app.api.users.services import update
-from app.api.users.services import create, get, delete
+from app.api.users.services import update, create, get, delete
 from app.auth.security import get_current_user
 from app.api.users.models import User as UserModel
 

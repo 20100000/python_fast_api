@@ -2,6 +2,14 @@
 
 Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)** via *Guards* inspirados no NestJS, versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
 
+## ⚡ Novidade: Arquitetura Assíncrona Integrada (Rota Users V2)
+O projeto agora conta com o **versionamento de rotas (V2)** para o recurso de Usuários. Esta implementação introduz o modelo de concorrência assíncrona nativa com `async/await` e `AsyncSession` através do driver `asyncpg`.
+
+Os principais motivos para a criação desta V2 isolada foram:
+* **Alta Performance e Escalabilidade:** Permite que o servidor processe milhares de requisições simultâneas sem bloquear a Thread principal durante operações de I/O no banco de dados.
+* **Modernização Arquitetural:** Demonstra a convivência harmônica entre sistemas síncronos legados (V1) e novas rotas de alta eficiência assíncronas (V2) compartilhando os mesmos modelos de dados.
+* **Otimização de Recursos:** Reduz drasticamente o consumo de memória e latência em endpoints de grande tráfego, como listagens estruturadas e buscas frequentes.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
@@ -9,7 +17,8 @@ Uma API RESTful moderna, de alta performance e estruturada de forma modular, des
 * **[Python 3.11](https://python.org)** - Linguagem de programação base.
 * **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automático TDD.
 * **[FastAPI](https://tiangolo.com)** - Framework web focado em alta performance e documentação automatizada.
-* **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL.
+* **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL (com suporte assíncrono via `ext.asyncio`).
+* **[asyncpg](https://github.io)** - Driver de banco de dados assíncrono, rápido e nativo para PostgreSQL usado na V2.
 * **[Alembic 1.13](https://sqlalchemy.org)** - Controle e versionamento de alterações do banco de dados.
 * **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
 * **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
@@ -29,7 +38,7 @@ meu-projeto-fastapi/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── main.py             # Ponto de entrada da API e registro de roteadores
+│   ├── main.py             # Ponto de entrada da API e registro de roteadores (V1 e V2)
 │   ├── config.py           # Leitura centralizada e tipada do arquivo .env
 │   │
 │   ├── auth/               # 🔐 Módulo central de Segurança e Criptografia
@@ -54,18 +63,28 @@ meu-projeto-fastapi/
 │   │           └──users/              # Módulo isolado de Usuários
 │   │               ├── __init__.py
 │   │               ├── models.py       # Inclusão do campo password criptografado
-│   │               ├── router.py
+│   │               ├── router.py       # Endpoints síncronos da V1
 │   │               ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-│   │               └── services/      
+│   │               ├── services/      
+│   │               │    ├── __init__.py
+│   │               │    ├── create.py  # Intercepta senhas e aplica hash antes de salvar
+│   │               │    ├── delete.py
+│   │               │    ├── exceptions.py
+│   │               │    ├── get.py
+│   │               │    └── update.py  # Lógica centralizada para validação de Usuário Master
+│   │               │
+│   │               └── v2/             # ⚡ NOVO: Submódulo Assíncrono de Usuários (V2)
 │   │                    ├── __init__.py
-│   │                    ├── create.py  # Intercepta senhas e aplica hash antes de salvar
-│   │                    ├── delete.py
-│   │                    ├── exceptions.py
-│   │                    ├── get.py
-│   │                    └── update.py  # Lógica centralizada para validação de Usuário Master
+│   │                    ├── router.py  # Rotas assíncronas (/v2/users/) com suporte a AsyncSession
+│   │                    └── services/  # Camada de regras de negócio assíncronas (async/await)
+│   │                         ├── __init__.py
+│   │                         ├── create.py
+│   │                         ├── delete.py
+│   │                         ├── get.py
+│   │                         └── update.py
 │   │        
 │   └── DB/ 
-│       ├── database.py     # Conexão global consumindo a URL do config.py
+│       ├── database.py     # Conexão global suportando Session síncrona e AsyncSession Local
 │       ├── migrations/     # 🔄 NOVO: Histórico e scripts de migração do Alembic
 │       │   ├── versions/   # Arquivos de migração gerados automaticamente (.py)
 │       │   ├── env.py      # Script de execução do ambiente Alembic

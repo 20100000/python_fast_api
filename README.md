@@ -77,11 +77,11 @@ meu-projeto-fastapi/
 │   │                    ├── __init__.py
 │   │                    ├── router.py  # Rotas assíncronas (/v2/users/) com suporte a AsyncSession
 │   │                    └── services/  # Camada de regras de negócio assíncronas (async/await)
-│   │                         ├── __init__.py
-│   │                         ├── create.py
-│   │                         ├── delete.py
-│   │                         ├── get.py
-│   │                         └── update.py
+│   │                         ├── __init__.py  # (async/await)
+│   │                         ├── create.py  # (async/await)
+│   │                         ├── delete.py  # (async/await)
+│   │                         ├── get.py  # (async/await)
+│   │                         └── update.py  # (async/await)
 │   │        
 │   └── DB/ 
 │       ├── database.py     # Conexão global suportando Session síncrona e AsyncSession Local

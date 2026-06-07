@@ -54,7 +54,7 @@ meu-projeto-fastapi/
 │   │           │   └── schemas.py      
 │   │           │
 │   │           ├── products/           # 📦 NOVO: Módulo isolado de Produtos
-│   ├── api/────├── __init__.py
+│   ├── api/────├   ├── __init__.py
 │   │           │   ├── services/       # Camada de regras de negócio separaçõa de responsabilidade dos scripts
 │   │           │   ├── models.py       # Modelo SQLAlchemy 2.0 (Tabela: products)
 │   │           │   ├── router.py       # Endpoints da API com carregamento joinedload
@@ -98,6 +98,7 @@ meu-projeto-fastapi/
 ├── tests/                  # Suíte de testes automatizados isolados
 │   ├── __init__.py
 │   ├── conftest.py          
+│   ├── companies/               
 │   ├── users/               
 │   │   ├── __init__.py
 │   │   ├── test_create.py

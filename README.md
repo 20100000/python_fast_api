@@ -1,6 +1,6 @@
 # 🚀 FastAPI Modular CRUD (Users, Companies & Products)
 
-Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)** via *Guards* inspirados no NestJS, versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
+Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens), versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
 
 ## ⚡ Novidade: Arquitetura Assíncrona Integrada (Rota Users V2)
 O projeto agora conta com o **versionamento de rotas (V2)** para o recurso de Usuários. Esta implementação introduz o modelo de concorrência assíncrona nativa com `async/await` e `AsyncSession` através do driver `asyncpg`.

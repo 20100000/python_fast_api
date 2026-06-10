@@ -3,6 +3,7 @@ from app.DB.database import engine, Base
 from app.api.users.router import router as users_router
 from app.api.users.v2.router import router as users_v2_router
 from app.api.companies.router import router as companies_router
+from app.api.companies.v2.router import router as companies_v2_router
 from app.DB.seeds.run import run_all_seeds
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth.router import router as auth_router
@@ -46,6 +47,7 @@ def read_root():
 # Inclui as rotas e módulos
 app.include_router(auth_router)
 app.include_router(companies_router)
+app.include_router(companies_v2_router)
 app.include_router(products_router)
 app.include_router(users_router)
 app.include_router(users_v2_router)

@@ -17,6 +17,7 @@ async def execute(db: AsyncSession, user: schemas.UserCreate):
     db_user = models.User(
         name=user.name,
         email=user.email,
+        admin=user.admin | False,
         password=hashed_pwd
     )
     try:

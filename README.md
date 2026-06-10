@@ -51,7 +51,16 @@ meu-projeto-fastapi/
 │   │           │   ├── crud.py         #Não indicado fazer dessa forma varias resposabilidades para um unico script   
 │   │           │   ├── models.py       
 │   │           │   ├── router.py       # Script de router muito complexo e dificil manutenção
-│   │           │   └── schemas.py      
+│   │           │   └── schemas.py   
+│   │           │   └── v2/             # ⚡ NOVO: Submódulo Assíncrono de Empresas (V2)
+│   │           │       ├── __init__.py
+│   │           │       ├── router.py  # Rotas assíncronas (/v2/companies/) com suporte a AsyncSession
+│   │           │       └── services/  # Camada de regras de negócio assíncronas (async/await)
+│   │           │           ├── __init__.py  
+│   │           │           ├── create.py  # (async/await)
+│   │           │           ├── delete.py  # (async/await)
+│   │           │           ├── get.py  # (async/await)
+│   │           │           └── update.py  # (async/await)                               
 │   │           │
 │   │           ├── products/           # 📦 NOVO: Módulo isolado de Produtos
 │   ├── api/────├   ├── __init__.py
@@ -76,12 +85,7 @@ meu-projeto-fastapi/
 │   │               └── v2/             # ⚡ NOVO: Submódulo Assíncrono de Usuários (V2)
 │   │                    ├── __init__.py
 │   │                    ├── router.py  # Rotas assíncronas (/v2/users/) com suporte a AsyncSession
-│   │                    └── services/  # Camada de regras de negócio assíncronas (async/await)
-│   │                         ├── __init__.py  # (async/await)
-│   │                         ├── create.py  # (async/await)
-│   │                         ├── delete.py  # (async/await)
-│   │                         ├── get.py  # (async/await)
-│   │                         └── update.py  # (async/await)
+│   │                    └── services/  # Camada de regras de negócio assíncronas (async/await) para CRUD
 │   │        
 │   └── DB/ 
 │       ├── database.py     # Conexão global suportando Session síncrona e AsyncSession Local

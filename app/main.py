@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.graphql_app import graphql_router
 from app.DB.database import engine, Base
 from app.api.users.router import router as users_router
 from app.api.users.v2.router import router as users_v2_router
@@ -51,3 +52,5 @@ app.include_router(companies_v2_router)
 app.include_router(products_router)
 app.include_router(users_router)
 app.include_router(users_v2_router)
+
+app.include_router(graphql_router, prefix="/v3/graphql", tags=["GraphQL V3"])

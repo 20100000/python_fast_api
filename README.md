@@ -1,30 +1,31 @@
 # 🚀 FastAPI Modular CRUD (Users, Companies & Products)
 
-Uma API RESTful moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0** e **PostgreSQL**. O ambiente é totalmente de nível profissional, contando com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens), versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
+Uma API empresarial moderna, de alta performance e estruturada de forma modular, desenvolvida com **FastAPI**, **SQLAlchemy 2.0**, **Strawberry GraphQL** e **PostgreSQL**. O ambiente conta com isolamento de credenciais via `.env`, segurança nativa com **JWT (JSON Web Tokens)**, versionamento de banco com **Alembic**, e um sistema automatizado de sementes (*Seeds*) para inicialização rápida de dados.
 
 ## ⚡ Novidade: Arquitetura Assíncrona Integrada (Rota Users V2)
-O projeto agora conta com o **versionamento de rotas (V2)** para o recurso de Usuários. Esta implementação introduz o modelo de concorrência assíncrona nativa com `async/await` e `AsyncSession` através do driver `asyncpg`.
+O projeto conta com o **versionamento de rotas (V2)** para o recurso de Usuários. Esta implementação introduz o modelo de concorrência assíncrona nativa com `async/await` e `AsyncSession` através do driver `asyncpg` para alta performance e escalabilidade de I/O.
 
-Os principais motivos para a criação desta V2 isolada foram:
-* **Alta Performance e Escalabilidade:** Permite que o servidor processe milhares de requisições simultâneas sem bloquear a Thread principal durante operações de I/O no banco de dados.
-* **Modernização Arquitetural:** Demonstra a convivência harmônica entre sistemas síncronos legados (V1) e novas rotas de alta eficiência assíncronas (V2) compartilhando os mesmos modelos de dados.
-* **Otimização de Recursos:** Reduz drasticamente o consumo de memória e latência em endpoints de grande tráfego, como listagens estruturadas e buscas frequentes.
+## 🍇 Novidade V3: Camada Enterprise com Strawberry GraphQL
+A **versão 3 (V3)** da API eleva a arquitetura do projeto ao padrão corporativo ao introduzir o **GraphQL** por meio do ecossistema **Strawberry**.
+* **Single Endpoint:** Toda a comunicação, consultas e mutations ocorrem sob o endpoint unificado `/v3/graphql`.
+* **Segurança por Guards Globais:** Proteção nativa de queries e mutations usando herança de permissões (`BasePermission`), desacoplando o código de validação repetitivo dos controladores.
+* **Services Dedicados (V3/Services):** Camada isolada e especializada de regras de negócio assíncronas para atender estritamente ao ecossistema GraphQL.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
 * **[Python 3.11](https://python.org)** - Linguagem de programação base.
-* **[Pytest 8.2.2](https://docs.pytest.org/en/stable/)** - Para teste automático TDD.
-* **[FastAPI](https://tiangolo.com)** - Framework web focado em alta performance e documentação automatizada.
-* **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto para mapeamento das tabelas SQL (com suporte assíncrono via `ext.asyncio`).
-* **[asyncpg](https://github.io)** - Driver de banco de dados assíncrono, rápido e nativo para PostgreSQL usado na V2.
-* **[Alembic 1.13](https://sqlalchemy.org)** - Controle e versionamento de alterações do banco de dados.
-* **[Pydantic v2](https://pydantic.dev)** - Validação de dados de entrada e saída.
-* **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento e validação estrita de variáveis de ambiente.
-* **[PyJWT 2.10.1](https://readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
+* **[FastAPI](https://tiangolo.com)** - Framework web de alta performance e documentação automatizada.
+* **[Strawberry GraphQL](https://strawberry.rocks)** - Biblioteca baseada em dataclasses para criação de APIs GraphQL robustas e tipadas.
+* **[SQLAlchemy 2.0](https://sqlalchemy.org)** - ORM robusto com suporte assíncrono via `ext.asyncio`.
+* **[asyncpg](https://github.com)** - Driver de banco de dados assíncrono e nativo para PostgreSQL.
+* **[Alembic 1.13](https://alembic.sqlalchemy.org)** - Controle e versionamento de alterações do banco de dados.
+* **[Pydantic v2](https://pydantic.dev)** - Validação estrita de dados de entrada e saída.
+* **[Pydantic Settings](https://pydantic.dev)** - Gerenciamento de variáveis de ambiente.
+* **[PyJWT 2.10.1](https://pyjwt.readthedocs.io)** - Geração e decodificação de Tokens de Acesso.
 * **[PostgreSQL 15](https://postgresql.org)** - Banco de dados relacional de produção.
-* **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para teste (TDD).
+* **[SQLite 3.46.1](https://sqlite.org/)** - Banco de dados usado somente para testes (TDD).
 * **[Docker & Docker Compose](https://docker.com)** - Criação de ambientes isolados e orquestração de contêineres.
 
 ---
@@ -38,86 +39,60 @@ meu-projeto-fastapi/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── main.py             # Ponto de entrada da API e registro de roteadores (V1 e V2)
+│   ├── main.py             # Ponto de entrada da API e registro de roteadores (V1, V2 e V3)
 │   ├── config.py           # Leitura centralizada e tipada do arquivo .env
+│   ├── graphql_app.py      # Agregador central e unificador de Queries/Mutations do GraphQL V3
 │   │
 │   ├── auth/               # 🔐 Módulo central de Segurança e Criptografia
 │   │   ├── __init__.py
-│   │   ├── router.py       # Endpoint HTTP de Login (/auth/login)
+│   │   ├── graphql_guards.py # Guards de Permissão e Validação do JWT para o GraphQL
+│   │   ├── router.py       # Endpoint HTTP de Login REST (/auth/login)
 │   │   └── security.py     # Funções de hashing e validação do token JWT
 │   │
-│   │           ├── companies/          # Módulo isolado de Empresas
-│   │           │   ├── __init__.py
-│   │           │   ├── crud.py         #Não indicado fazer dessa forma varias resposabilidades para um unico script   
-│   │           │   ├── models.py       
-│   │           │   ├── router.py       # Script de router muito complexo e dificil manutenção
-│   │           │   └── schemas.py   
-│   │           │   └── v2/             # ⚡ NOVO: Submódulo Assíncrono de Empresas (V2)
-│   │           │       ├── __init__.py
-│   │           │       ├── router.py  # Rotas assíncronas (/v2/companies/) com suporte a AsyncSession
-│   │           │       └── services/  # Camada de regras de negócio assíncronas (async/await)
-│   │           │           ├── __init__.py  
-│   │           │           ├── create.py  # (async/await)
-│   │           │           ├── delete.py  # (async/await)
-│   │           │           ├── get.py  # (async/await)
-│   │           │           └── update.py  # (async/await)                               
-│   │           │
-│   │           ├── products/           # 📦 NOVO: Módulo isolado de Produtos
-│   ├── api/────├   ├── __init__.py
-│   │           │   ├── services/       # Camada de regras de negócio separaçõa de responsabilidade dos scripts
-│   │           │   ├── models.py       # Modelo SQLAlchemy 2.0 (Tabela: products)
-│   │           │   ├── router.py       # Endpoints da API com carregamento joinedload
-│   │           │   └── schemas.py      # Schemas de validação de dados Pydantic V2
-│   │           │
-│   │           └──users/              # Módulo isolado de Usuários
-│   │               ├── __init__.py
-│   │               ├── models.py       # Inclusão do campo password criptografado
-│   │               ├── router.py       # Endpoints síncronos da V1
-│   │               ├── schemas.py      # Filtro para nunca expor senhas em respostas HTTP
-│   │               ├── services/      
-│   │               │    ├── __init__.py
-│   │               │    ├── create.py  # Intercepta senhas e aplica hash antes de salvar
-│   │               │    ├── delete.py
-│   │               │    ├── exceptions.py
-│   │               │    ├── get.py
-│   │               │    └── update.py  # Lógica centralizada para validação de Usuário Master
-│   │               │
-│   │               └── v2/             # ⚡ NOVO: Submódulo Assíncrono de Usuários (V2)
-│   │                    ├── __init__.py
-│   │                    ├── router.py  # Rotas assíncronas (/v2/users/) com suporte a AsyncSession
-│   │                    └── services/  # Camada de regras de negócio assíncronas (async/await) para CRUD
-│   │        
+│   └── api/
+│       ├── companies/      # Módulo isolado de Empresas (V1, V2)
+│       │   ├── __init__.py
+│       │   ├── crud.py         
+│       │   ├── models.py       
+│       │   ├── router.py       
+│       │   └── schemas.py   
+│       │   └── v2/             
+│       │       ├── __init__.py
+│       │       ├── router.py  
+│       │       └── services/  
+│       │
+│       ├── products/       # 📦 Módulo isolado de Produtos
+│       │   ├── __init__.py
+│       │   ├── services/       
+│       │   ├── models.py       
+│       │   └── router.py       
+│       │   └── schemas.py      
+│       │
+│       └── users/          # Módulo isolado de Usuários
+│           ├── __init__.py
+│           ├── models.py       
+│           ├── router.py       
+│           ├── schemas.py      
+│           ├── services/       # Services Síncronos V1
+│           │
+│           ├── v2/             # Submódulo Assíncrono REST (V2)
+│           │
+│           └── v3/             # 🍇 NOVO: Submódulo Corporativo GraphQL (V3)
+│               ├── __init__.py
+│               ├── mutations.py  # Controladores de escrita do GraphQL (Create, Update, Delete)
+│               ├── queries.py    # Controladores de leitura do GraphQL (Queries)
+│               ├── types.py      # Mapeadores e Inputs de dados do Strawberry
+│               └── services/     # Camada de regras de negócio assíncronas EXCLUSIVA da V3
+│                   ├── __init__.py
+│                   ├── create.py
+│                   ├── delete.py
+│                   ├── get.py
+│                   └── update.py
+│        
 │   └── DB/ 
 │       ├── database.py     # Conexão global suportando Session síncrona e AsyncSession Local
-│       ├── migrations/     # 🔄 NOVO: Histórico e scripts de migração do Alembic
-│       │   ├── versions/   # Arquivos de migração gerados automaticamente (.py)
-│       │   ├── env.py      # Script de execução do ambiente Alembic
-│       │   └── script.py.mako
-│       └── seeds/            
-│           ├── __init__.py
-│           ├── companies_seed.py
-│           ├── users_seed.py # Cadastra usuários de teste já criptografando a senha
-│           └── run.py          
-│ 
-├── tests/                  # Suíte de testes automatizados isolados
-│   ├── __init__.py
-│   ├── conftest.py          
-│   ├── companies/               
-│   ├── users/               
-│   │   ├── __init__.py
-│   │   ├── test_create.py
-│   │   ├── test_delete.py
-│   │   ├── test_get_all.py
-│   │   ├── test_get_by_id.py
-│   │   └── test_update.py
-│   └── products/           # Testes automatizados do recurso de produtos
-│
-├── .env                    # Arquivo de configuração de segredos (Ignorado no Git)
-├── alembic.ini             # Configuração global de caminhos do Alembic
-├── Dockerfile              
-├── docker-compose.yml      # Configuração limpa usando variáveis estruturadas ${}
-├── pytest.ini              
-└── requirements.txt        
+│       ├── migrations/     # Histórico e scripts de migração do Alembic
+│       └── seeds/          # Alimentação automática inicial do banco de dados
 ```
 
 ---
@@ -148,14 +123,79 @@ Certifique-se de ter instalado em sua máquina:
    POSTGRES_PASSWORD=tiago123
    POSTGRES_DB=python_crud
 
-   DATABASE_URL=postgresql://tiago:tiago123@db:5432/python_crud
+   DATABASE_URL=postgresql+asyncpg://tiago:tiago123@db:5432/python_crud
    ```
 
 3. **Inicie os contêineres do Docker:**
-   O comando abaixo fará o download do PostgreSQL, aplicará as variáveis de chaves `${}`, instalará as dependências estruturais, executará os procedimentos iniciais e subirá o servidor.
+   O comando abaixo fará o download do PostgreSQL, aplicará as variáveis de chaves, instalará as dependências (`requirements.txt`) e subirá o servidor automaticamente:
    ```bash
+   docker compose down
    docker compose up --build
    ```
+
+---
+
+## 🍇 Como consumir a API GraphQL V3
+
+A interface interativa do **Strawberry (GraphiQL)** fica disponível publicamente em: `http://localhost:8000/v3/graphql`.
+
+### 🔐 Autenticação nas Requisições
+Para executar as queries ou mutations que possuem proteção por **Guard**, você deve obter seu Token JWT no endpoint `/auth/login` (via REST) e adicioná-lo no rodapé do painel do GraphiQL na aba **Headers** usando o formato JSON abaixo:
+
+```json
+{
+  "Authorization": "Bearer SEU_TOKEN_JWT_AQUI"
+}
+```
+
+### 📑 Exemplos Práticos de Operações
+
+#### 1. Query: Listar Usuários (Requer Token)
+```graphql
+query {
+  allUsers(skip: 0, limit: 10) {
+    id
+    name
+    email
+    admin
+    createdAt
+    updatedAt
+  }
+}
+```
+
+#### 2. Mutation: Criar Novo Usuário (Público)
+```graphql
+mutation {
+  createUser(input: {
+    name: "John Doe",
+    email: "john@example.com",
+    password: "securepassword123",
+    admin: false
+  }) {
+    id
+    name
+    email
+    createdAt
+  }
+}
+```
+
+#### 3. Mutation: Atualizar Dados do Usuário (Requer Token)
+```graphql
+mutation {
+  updateUser(userId: 1, input: {
+    name: "John Doe Alterado",
+    admin: true
+  }) {
+    id
+    name
+    admin
+    updatedAt
+  }
+}
+```
+
 
 4. **Acompanhe a inicialização:**
    Aguarde até visualizar a mensagem de sucesso informando que os seeds rodaram e o servidor web está online:

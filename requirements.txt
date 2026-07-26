@@ -13,3 +13,4 @@ pyjwt==2.10.1
 python-multipart==0.0.20
 pydantic-settings==2.7.1
 asyncpg==0.29.0
+strawberry-graphql[fastapi]>=0.230.0
